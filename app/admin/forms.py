@@ -1,7 +1,7 @@
 # _*_ coding: utf-8 _*_
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, ValidationError, EqualTo, Required, Length
+from wtforms.validators import DataRequired, ValidationError, EqualTo, Length
 from app.models import Admin, Tag, Auth, Role
 
 
@@ -93,9 +93,9 @@ class MovieForm(FlaskForm):
     )
     info = TextAreaField(
         label="简介",
-        validators=[
-            DataRequired("简介不能为空！")
-        ],
+        # validators=[
+        #     DataRequired("简介不能为空！")
+        # ],
         description="简介",
         render_kw={
             "class": "form-control",
@@ -104,16 +104,16 @@ class MovieForm(FlaskForm):
     )
     logo = FileField(
         label="封面",
-        validators=[
-            DataRequired("请上传封面！")
-        ],
+        # validators=[
+        #     DataRequired("请上传封面！")
+        # ],
         description="封面",
     )
     star = SelectField(
         label="星级",
-        validators=[
-            DataRequired("请选择星级！")
-        ],
+        # validators=[
+        #     DataRequired("请选择星级！")
+        # ],
         # star的数据类型
         coerce=int,
         choices=[(1, "1星"), (2, "2星"), (3, "3星"), (4, "4星"), (5, "5星")],
@@ -139,9 +139,9 @@ class MovieForm(FlaskForm):
     )
     area = StringField(
         label="地区",
-        validators=[
-            DataRequired("请输入地区！")
-        ],
+        # validators=[
+        #     DataRequired("请输入地区！")
+        # ],
         description="地区",
         render_kw={
             "class": "form-control",
@@ -150,9 +150,9 @@ class MovieForm(FlaskForm):
     )
     length = StringField(
         label="片长",
-        validators=[
-            DataRequired("片长不能为空！")
-        ],
+        # validators=[
+        #     DataRequired("片长不能为空！")
+        # ],
         description="片长",
         render_kw={
             "class": "form-control",
@@ -161,9 +161,9 @@ class MovieForm(FlaskForm):
     )
     release_time = StringField(
         label="上映时间",
-        validators=[
-            DataRequired("上映时间不能为空！")
-        ],
+        # validators=[
+        #     DataRequired("上映时间不能为空！")
+        # ],
         description="上映时间",
         render_kw={
             "class": "form-control",
@@ -306,7 +306,8 @@ class RoleForm(FlaskForm):
         ],
         # 动态数据填充选择栏：列表生成器
         coerce=int,
-        choices=[(v.id, v.name) for v in Auth.query.all()],
+        # choices=[(v.id, v.name) for v in Auth.query.all()],
+        choices=[1,2,3],
         description="权限列表",
         render_kw={
             "class": "form-control",
@@ -358,7 +359,8 @@ class AdminForm(FlaskForm):
     role_id = SelectField(
         label="所属角色",
         coerce=int,
-        choices=[(v.id, v.name) for v in Role.query.all()],
+        # choices=[(v.id, v.name) for v in Role.query.all()],
+        choices=[1,2,3],
         render_kw={
             "class": "form-control",
         }

@@ -204,7 +204,7 @@
     var dp1 = new DPlayer({
         element: document.getElementById('dplayer1'),
         video: {
-            url: "{{ url_for('static',filename='uploads/'+movie.url) }}",
+            url: "{{ url_for('home.stream_video', filename=movie.url) }}",
         },
         danmaku: {
             id: '{{ movie.id }}',

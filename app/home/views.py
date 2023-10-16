@@ -4,12 +4,17 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 from werkzeug.security import generate_password_hash
-from app import db, app, rd
+# from app import db, app, rd
 from app.home.forms import RegistForm, LoginForm, UserdetailForm, PwdForm, CommentForm
+from app.exts import db,rd
+from flask import current_app as app
 from app.models import User, Userlog, Preview, Tag, Movie, Comment, Moviecol
-from . import home
+# from . import home
 from flask import render_template, url_for, redirect, flash, session, request, Response
+from flask import send_from_directory
+from flask import Blueprint
 
+home = Blueprint("home", __name__)
 
 def change_filename(filename):
     """
@@ -483,3 +488,10 @@ def tm():
         # 将添加的弹幕推入redis的队列中
         rd.lpush("movie" + str(data["player"]), json.dumps(msg))
     return Response(resp, mimetype='application/json')
+
+@home.route('/video/<path:filename>')
+def stream_video(filename):
+    video_path = '/mnt/sd/files/movies/'
+    video_path = r'D:\workspace\flask_movie\app\static\uploads'
+    print(video_path)
+    return send_from_directory(video_path, filename)

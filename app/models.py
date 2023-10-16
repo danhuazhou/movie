@@ -1,9 +1,10 @@
 from datetime import datetime
-from app import db
+from .exts import db
 
 # 会员
 class User(db.Model):
     __tablename__ = "user"
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     pwd = db.Column(db.String(50))
@@ -24,6 +25,7 @@ class User(db.Model):
 # 会员日志
 class Userlog(db.Model):
     __tablename__ = "userlog"
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属会员
     ip = db.Column(db.String(100))  # 登录ip
@@ -35,7 +37,7 @@ class Userlog(db.Model):
 
 class Tag(db.Model):
     __tablename__ = "tag"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     name = db.Column(db.String(100), unique=True)  # 标题
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 添加电影时间
@@ -49,7 +51,7 @@ class Tag(db.Model):
 # 电影
 class Movie(db.Model):
     __tablename__ = "movie"
-    # __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     title = db.Column(db.String(255), unique=True)  # 标题
     url = db.Column(db.String(255), unique=True)  # 地址
@@ -74,7 +76,7 @@ class Movie(db.Model):
 # 上映预告
 class Preview(db.Model):
     __tablename__ = "preview"
-    #__table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     title = db.Column(db.String(255), unique=True)  # 标题
     logo = db.Column(db.String(255), unique=True)  # 封面
@@ -87,7 +89,7 @@ class Preview(db.Model):
 # 评论
 class Comment(db.Model):
     __tablename__ = "comment"
-    #__table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     content = db.Column(db.Text)  # 评论内容
     # 关联外键第一步，还要去user表和movie表进行第二步
@@ -102,7 +104,7 @@ class Comment(db.Model):
 # 电影收藏
 class Moviecol(db.Model):
     __tablename__ = "moviecol"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     # 关联外键第一步，还要去user表和movie表进行第二步
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # 所属电影
@@ -116,7 +118,7 @@ class Moviecol(db.Model):
 # 权限
 class Auth(db.Model):
     __tablename__ = "auth"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     name = db.Column(db.String(100), unique=True)  # 名称
     url = db.Column(db.String(255), unique=True)  # 地址
@@ -129,7 +131,7 @@ class Auth(db.Model):
 # 角色
 class Role(db.Model):
     __tablename__ = "role"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     name = db.Column(db.String(100), unique=True)  # 名称
     auths = db.Column(db.String(600))  # 角色权限列表
@@ -143,10 +145,10 @@ class Role(db.Model):
 # 管理员
 class Admin(db.Model):
     __tablename__ = "admin"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     name = db.Column(db.String(100), unique=True)  # 管理员账号
-    pwd = db.Column(db.String(100))  # 管理员密码
+    pwd = db.Column(db.String(200))  # 管理员密码
     is_super = db.Column(db.SmallInteger)  # 是否为超级管理员，0为超级管理员
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))  # 所属角色
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 添加时间
@@ -164,7 +166,7 @@ class Admin(db.Model):
 # 管理员登录日志
 class Adminlog(db.Model):
     __tablename__ = "adminlog"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 所属管理员
     ip = db.Column(db.String(100))  # 登录IP
@@ -177,7 +179,7 @@ class Adminlog(db.Model):
 # 操作日志
 class Oplog(db.Model):
     __tablename__ = "oplog"
-    __table_args__ = {"useexisting": True}
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)  # 编号
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))  # 所属管理员
     ip = db.Column(db.String(100))  # 操作IP
@@ -188,23 +190,23 @@ class Oplog(db.Model):
         return "<Oplog %r>" % self.id
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # db.create_all()
 
-    # # 测试数据的插入
+    # 测试数据的插入
     # role = Role(
     #     name="超级管理员",
     #     auths=""
     # )
-    # # 添加
+    # 添加
     # db.session.add(role)
-    # # 提交
+    # 提交
     # db.session.commit()
-    # from werkzeug.security import generate_password_hash
-    #
+    from werkzeug.security import generate_password_hash
+    print(generate_password_hash("admin"))
     # admin = Admin(
-    #     name="zpfmovie",
-    #     pwd=generate_password_hash("zpfmovie"),
+    #     name="admin",
+    #     pwd=generate_password_hash("admin"),
     #     is_super=0,
     #     role_id=1
     # )

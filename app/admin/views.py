@@ -1,16 +1,18 @@
 # _*_ coding: utf-8 _*_
-from . import admin
+# from . import admin
 from flask import render_template, redirect, url_for, flash, session, request, g, abort
 from app.admin.forms import LoginForm, TagForm, MovieForm, PreviewForm, PwdForm, AuthForm, RoleForm, AdminForm
 from app.models import Admin, Tag, Movie, Preview, User, Comment, Moviecol, Oplog, Adminlog, Userlog, Auth, Role
 from functools import wraps
-from app import db, app
+# from app import db, app
+from flask import current_app as app
+from app.exts import db
 from werkzeug.utils import secure_filename
 import os
 import uuid
 from datetime import datetime
-
-
+from flask import Blueprint
+admin = Blueprint("admin", __name__)
 def admin_log_req(f):
     """
     登录装饰器

@@ -210,7 +210,7 @@
     jwplayer("moviecontainer").setup({
         flashplayer: "{{ url_for('static',filename='jwplayer/jwplayer.flash.swf') }}",
         playlist: [{
-            file: "{{ url_for('static',filename='uploads/'+movie.url) }}",
+            file: "{{ url_for('home.stream_video', filename=movie.url) }}",
             title: "{{ movie.title }}"
         }],
         modes: [{
